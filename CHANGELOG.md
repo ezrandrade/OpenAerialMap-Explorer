@@ -1,3 +1,6 @@
+## 0.5.7
+- Corrige ocorrências Bandit B110 e registra falhas recuperáveis no log do QGIS.
+
 ## 0.5.5 — candidata à publicação
 - Atualização da documentação, autoria e metadados de versão.
 - Sem mudanças no código de execução em relação à 0.5.4.
