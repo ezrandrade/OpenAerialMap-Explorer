@@ -1,4 +1,4 @@
-"""OpenAerialMap Explorer v0.5.3 — QGIS 4 / Qt6.
+"""OpenAerialMap Explorer v0.5.7 — QGIS 4 / Qt6.
 
 Uses HOT's live STAC catalog and TiTiler (individual tiles with alpha/NoData).
 """
@@ -24,6 +24,7 @@ from qgis.core import (
     QgsProject, QgsRasterLayer, QgsCoordinateReferenceSystem,
     QgsCoordinateTransform, QgsNetworkAccessManager, QgsVectorLayer,
     QgsFeature, QgsGeometry, QgsPointXY, QgsField, QgsWkbTypes, QgsFillSymbol, QgsRectangle,
+    QgsMessageLog, Qgis,
 )
 
 BASEMAP = 'https://global.imagery.hotosm.org/{z}/{x}/{y}.png'
@@ -641,8 +642,11 @@ class OAMWindow(QDialog):
             bounds_3857 = self.extent_for_item(self.items[index],
                                 QgsCoordinateReferenceSystem('EPSG:3857'))
             layer.setExtent(bounds_3857)
-        except Exception:
-            pass  # QGIS providers can override extents; STAC zoom still works.
+        except (RuntimeError, TypeError, ValueError) as exc:
+            QgsMessageLog.logMessage(
+                'Não foi possível definir a extensão da camada XYZ: ' + str(exc),
+                'OpenAerialMap Explorer', Qgis.MessageLevel.Warning)
+            # O enquadramento por STAC permanece disponível.
         layer.setCustomProperty('oam/item_id', item_id)
         layer.setCustomProperty('oam/bbox', json.dumps(self.items[index].get('bbox')))
         QgsProject.instance().addMapLayer(layer)
@@ -767,14 +771,18 @@ class OAMWindow(QDialog):
         if self.download_file is not None:
             try:
                 self.download_file.close()
-            except Exception:
-                pass
+            except (OSError, RuntimeError, ValueError) as exc:
+                QgsMessageLog.logMessage(
+                    'Falha ao fechar arquivo temporário de download: ' + str(exc),
+                    'OpenAerialMap Explorer', Qgis.MessageLevel.Warning)
             self.download_file = None
         if self.download_temp_path is not None:
             try:
                 self.download_temp_path.unlink(missing_ok=True)
-            except OSError:
-                pass
+            except OSError as exc:
+                QgsMessageLog.logMessage(
+                    'Falha ao excluir arquivo temporário de download: ' + str(exc),
+                    'OpenAerialMap Explorer', Qgis.MessageLevel.Warning)
         self.download_temp_path = None
         self.download_final_path = None
         self.download_button.setEnabled(True)
@@ -1056,8 +1064,10 @@ class OpenAerialMapExplorer:
                 if reply is not None:
                     try:
                         reply.abort()
-                    except RuntimeError:
-                        pass
+                    except RuntimeError as exc:
+                        QgsMessageLog.logMessage(
+                            'Resposta de rede já encerrada ao descarregar plugin: ' + str(exc),
+                            'OpenAerialMap Explorer', Qgis.MessageLevel.Warning)
             if self.dock.download_reply is not None:
                 self.dock.cancel_batch()
                 self.dock.cancel_download()
