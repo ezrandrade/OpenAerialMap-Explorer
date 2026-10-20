@@ -1,0 +1,20 @@
+[general]
+name=OpenAerialMap Explorer
+qgisMinimumVersion=4.0
+qgisMaximumVersion=4.99
+version=0.5.6
+author=Esdras Andrade
+email=esdras.andrade@igdema.ufal.br
+description=OpenAerialMap STAC explorer with spatial/temporal search, platform and resolution filters, imagery footprints, thumbnails and transparent tiles and integrated GeoTIFF downloads and sequential batch queue.
+about=Explore o catálogo OpenAerialMap, carregue mosaicos e imagens individuais no QGIS. Plugin comunitário independente, sem afiliação oficial ao HOT ou OpenAerialMap.
+category=Raster
+
+experimental=True
+changelog=0.5.5: Revisão documental para candidatura; código de execução inalterado.\n0.5.4: Removido rodapé de autoria/responsabilidade da janela de advertência.\n0.5.3: Aviso técnico com opção de não exibir e reforço da autoria.\n0.5.2: Documentação e licenciamento para preparação de publicação; código de execução inalterado.\n0.5.1: Botão Fechar e nomes dos arquivos a partir do título STAC.
+deprecated=False
+hasProcessingProvider=False
+tags=openaerialmap,aerial,imagery,STAC,XYZ,raster,remote sensing
+homepage=https://github.com/ezrandrade/OpenAerialMap-Explorer
+repository=https://github.com/ezrandrade/OpenAerialMap-Explorer
+tracker=https://github.com/ezrandrade/OpenAerialMap-Explorer/issues
+icon=icon.png
