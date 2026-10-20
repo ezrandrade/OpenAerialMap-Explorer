@@ -1,6 +1,6 @@
 # OpenAerialMap Explorer — QGIS 4.x
 
-**Versão candidata 0.5.5 (experimental; ainda não publicada no repositório oficial).**
+**Versão candidata 0.5.6 (experimental; ainda não publicada no repositório oficial).**
 
 Plugin comunitário independente desenvolvido por Esdras Andrade; não é um produto oficial do OpenAerialMap ou do Humanitarian OpenStreetMap Team (HOT).
 
